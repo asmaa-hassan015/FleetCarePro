@@ -35,10 +35,6 @@ dotnet run
 
 Or press **F5** in Visual Studio. On first run, `SeedData` automatically creates the **Admin**, **FleetManager**, and **Driver** roles plus the three test accounts listed below — no manual setup needed.
 
-The app is available at:
-- `https://localhost:7158`
-- `http://localhost:5294`
-
 **Maintenance Mode**
 
 Set `"IsMaintenanceMode": true` in `appsettings.json` and restart the app to redirect all traffic to the maintenance page. Set it back to `false` to resume normal access.
