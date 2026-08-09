@@ -1,0 +1,35 @@
+﻿@model ServiceCategory
+
+<section class="ah-section" style="padding-top: 3rem;">
+    <div class="container" style="max-width: 600px;">
+
+        <div class="ah-section-head mb-5 text-center">
+            <span class="ah-eyebrow center d-inline-flex">FleetCare Pro</span>
+            <h2 class="ah-section-title">Category Details</h2>
+            <p class="ah-section-sub mx-auto">Detailed information about this maintenance category.</p>
+        </div>
+
+        <div class="ah-card reveal">
+            <div class="ah-card-body p-4 p-md-5">
+
+                <h3 class="ah-card-title mb-3" style="font-size: 1.5rem;">@Model.CategoryName</h3>
+
+                <div class="mb-4" style="color: var(--ah-silver); line-height: 1.8;">
+                    <p class="mb-2"><strong>Description:</strong> @(string.IsNullOrEmpty(Model.Description) ? "No description provided." : Model.Description)</p>
+                    <p class="mb-2"><strong>Recommended Interval:</strong> @Model.RecommendedIntervalMonths months</p>
+                    <p class="mb-0"><strong>Related Line Items:</strong> @Model.ServiceLineItems.Count()</p>
+                </div>
+
+                <div class="ah-divider my-4"></div>
+
+                <div class="d-flex justify-content-end">
+                    <a href="/ServiceCategory/GetAll" class="btn btn-ghost px-4">
+                        Back to List
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>

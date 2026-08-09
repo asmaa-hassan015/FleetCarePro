@@ -1,0 +1,74 @@
+﻿@model List<FleetCarePro.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Vehicles";
+}
+
+<div class="ah-toolbar mb-4">
+
+    <div class="d-flex gap-2 flex-wrap">
+
+        @if (User.IsInRole("Admin") || User.IsInRole("FleetManager"))
+        {
+            <a asp-controller="Vehicle"
+               asp-action="Add"
+               class="btn btn-ah btn-sm">
+
+                <svg width="15"
+                     height="15"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     class="me-1">
+
+                    <path d="M12 5v14M5 12h14" />
+
+                </svg>
+
+                Add Vehicle
+
+            </a>
+        }
+
+        <a asp-controller="Vehicle"
+           asp-action="GetAll"
+           class="btn btn-ghost btn-sm">
+
+            Table View
+
+        </a>
+
+    </div>
+
+    <span style="color:var(--ah-muted); font-size:.9rem;">
+
+        <strong style="color:var(--ah-white);">
+            @Model.Count
+        </strong>
+
+        vehicles
+
+    </span>
+
+</div>
+
+
+@if (Model.Any())
+{
+    <div class="ah-inv-grid">
+
+        @foreach (var vehicle in Model)
+        {
+            <partial name="_VehicleCard"
+                     model="vehicle" />
+        }
+
+    </div>
+}
+else
+{
+    <div class="ah-empty">
+        No vehicles found.
+    </div>
+}

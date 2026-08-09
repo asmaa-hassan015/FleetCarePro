@@ -1,0 +1,159 @@
+﻿@model List<FleetCarePro.ViewModels.ManageUserVM>
+
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert mb-4"
+         style="background: rgba(30,196,122,.1);
+        border: 1px solid rgba(30,196,122,.4);
+        color:#7ff0b8;
+        border-radius: var(--ah-radius-sm);">
+
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert mb-4"
+         style="background: rgba(255,90,95,.1);
+        border: 1px solid rgba(255,90,95,.4);
+        color:#ff8488;
+        border-radius: var(--ah-radius-sm);">
+
+        @TempData["Error"]
+    </div>
+}
+
+<span class="ah-eyebrow">Admin</span>
+
+<h3 class="mb-4">
+    Manage Users
+</h3>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert"
+         style="background: var(--ah-surface);
+        border: 1px solid var(--ah-line);
+        color: var(--ah-muted);">
+
+        No users found.
+    </div>
+}
+else
+{
+    <div class="d-flex flex-column gap-3">
+
+        @foreach (var u in Model)
+        {
+            <div class="d-flex align-items-center justify-content-between p-3 flex-wrap gap-3"
+                 style="background: var(--ah-surface);
+                border: 1px solid var(--ah-line);
+                border-radius: var(--ah-radius);">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="d-flex align-items-center justify-content-center"
+                         style="width:46px;
+                        height:46px;
+                        border-radius:10px;
+                        background: linear-gradient(
+                        140deg,
+                        var(--ah-blue) 0%,
+                        var(--ah-blue-deep) 100%);
+                        color:#fff;
+                        font-family: var(--ah-font-display);
+                        font-weight:700;">
+
+                        @(string.IsNullOrEmpty(u.FullName)
+                            ? "?"
+                            : u.FullName.Substring(0, 1).ToUpper())
+                    </div>
+
+                    <div>
+                        <div style="color: var(--ah-white);
+                            font-family: var(--ah-font-display);
+                            font-weight:600;">
+
+                            @u.FullName
+                        </div>
+
+                        <div style="color: var(--ah-muted);
+                            font-size:.85rem;">
+
+                            @u.Email · @u.EmployeeId
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+
+                    <span class="badge"
+                          style="background: rgba(47,107,255,.15);
+                        color: var(--ah-blue-bright);
+                        border: 1px solid rgba(47,107,255,.3);
+                        font-weight:500;
+                        padding:.5rem .8rem;">
+
+                        @u.CurrentRole
+                    </span>
+
+                    <form asp-controller="Admin"
+                          asp-action="ChangeRole"
+                          method="post"
+                          class="d-flex gap-2">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="userId"
+                               value="@u.Id" />
+
+                        <select name="newRole"
+                                class="form-select form-select-sm"
+                                style="background: var(--ah-charcoal);
+                            border: 1px solid var(--ah-line);
+                            color: var(--ah-white);
+                            border-radius: 7px;
+                            min-width:140px;">
+
+                            @if (ViewBag.AllRoles is List<string> allRoles)
+                            {
+                                foreach (var role in allRoles)
+                                {
+                                    if (role == u.CurrentRole)
+                                    {
+                                        <option value="@role" selected>
+                                            @role
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@role">
+                                            @role
+                                        </option>
+                                    }
+                                }
+                            }
+
+                        </select>
+
+                        <button type="submit"
+                                class="btn btn-ah btn-sm">
+                            Update
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}

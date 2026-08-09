@@ -1,0 +1,83 @@
+﻿@model FleetCarePro.Models.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+    ViewData["HideNav"] = true;
+}
+
+<span class="ah-eyebrow center d-inline-flex">
+    Error
+</span>
+
+<h3 class="mb-3">
+    Something went <span class="text-blue">wrong</span>
+</h3>
+
+<p style="color: var(--ah-muted);">
+    An unexpected error occurred while processing your request.
+    Please try again later.
+</p>
+
+@if (Model.ShowRequestId)
+{
+    <p style="color: var(--ah-muted); margin-top: 1rem;">
+        <strong style="color: var(--ah-silver);">
+            Request ID:
+        </strong>
+
+        <code style="color: var(--ah-blue-bright);">
+            @Model.RequestId
+        </code>
+    </p>
+}
+
+@if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+{
+    <div class="text-start mt-4 p-4"
+         style="background: var(--ah-charcoal);
+        border: 1px solid var(--ah-line);
+        border-radius: var(--ah-radius);
+        color: var(--ah-muted);
+        font-size: .9rem;">
+
+        <h6 style="color: var(--ah-white); margin-bottom: .8rem;">
+            Development Mode
+        </h6>
+
+        <p>
+            Swapping to
+            <strong style="color: var(--ah-silver);">
+                Development
+            </strong>
+            environment will display more detailed information
+            about the error that occurred.
+        </p>
+
+        <p class="mb-0">
+            <strong style="color: var(--ah-silver);">
+                Warning:
+            </strong>
+
+            The Development environment shouldn't be enabled
+            for deployed applications because it may expose
+            sensitive exception information to end users.
+        </p>
+
+    </div>
+}
+
+<div class="d-flex justify-content-center gap-2 mt-4">
+
+    <a asp-controller="Home"
+       asp-action="Index"
+       class="btn btn-ah">
+        Back to Home
+    </a>
+
+    <a asp-controller="Account"
+       asp-action="Login"
+       class="btn btn-outline-secondary">
+        Login
+    </a>
+
+</div>

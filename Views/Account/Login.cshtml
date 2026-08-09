@@ -1,0 +1,123 @@
+﻿@model FleetCarePro.ViewModels.LoginVM
+
+@{
+    ViewData["Title"] = "Login";
+    ViewData["HideNav"] = true;
+}
+
+<div class="text-center mb-4">
+    <span class="ah-eyebrow center d-inline-flex">
+        Welcome back
+    </span>
+
+    <h3 class="mb-0">
+        Sign in to FleetCare<span class="text-blue">Pro</span>
+    </h3>
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert"
+         style="background: rgba(255,90,95,.1);
+        border: 1px solid rgba(255,90,95,.4);
+        color:#ff8488;">
+
+        <div asp-validation-summary="All"></div>
+
+    </div>
+}
+
+<form asp-controller="Account"
+      asp-action="Login"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+
+        <label asp-for="Email"
+               class="form-label"
+               style="color: var(--ah-silver);
+            font-size:.78rem;
+            font-weight:600;
+            letter-spacing:.06em;
+            text-transform:uppercase;">
+        </label>
+
+        <input asp-for="Email"
+               class="form-control"
+               placeholder="you@fleetcare.com"
+               autocomplete="email"
+               style="background: var(--ah-charcoal);
+        border: 1px solid var(--ah-line);
+        color: var(--ah-white);
+        border-radius: 9px;
+        padding: .8rem 1rem;" />
+
+        <span asp-validation-for="Email"
+              class="text-danger">
+        </span>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="Password"
+               class="form-label"
+               style="color: var(--ah-silver);
+            font-size:.78rem;
+            font-weight:600;
+            letter-spacing:.06em;
+            text-transform:uppercase;">
+        </label>
+
+        <input asp-for="Password"
+               class="form-control"
+               placeholder="••••••••"
+               autocomplete="current-password"
+               style="background: var(--ah-charcoal);
+        border: 1px solid var(--ah-line);
+        color: var(--ah-white);
+        border-radius: 9px;
+        padding: .8rem 1rem;" />
+
+        <span asp-validation-for="Password"
+              class="text-danger">
+        </span>
+
+    </div>
+
+    <div class="mb-4 form-check">
+
+        <input asp-for="RememberMe"
+               class="form-check-input" />
+
+        <label asp-for="RememberMe"
+               class="form-check-label"
+               style="color: var(--ah-silver);">
+        </label>
+
+    </div>
+
+    <button type="submit"
+            class="btn btn-ah w-100">
+        Login
+    </button>
+
+</form>
+
+<p class="text-center mt-4 mb-0"
+   style="color: var(--ah-muted);">
+
+    Don't have an account?
+
+    <a asp-controller="Account"
+       asp-action="Register">
+        Register here
+    </a>
+
+</p>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

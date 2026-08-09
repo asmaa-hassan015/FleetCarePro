@@ -1,0 +1,70 @@
+﻿@model FleetCarePro.ViewModels.ServiceCenterViewModel
+
+@{
+    ViewData["Title"] = "Add New Service Center";
+}
+
+<div class="ah-section-head mb-5 text-center">
+
+    <span class="ah-eyebrow center d-inline-flex">
+        FleetCare Pro
+    </span>
+
+    <h2 class="ah-section-title">
+        Add New Service Center
+    </h2>
+
+    <p class="ah-section-sub mx-auto">
+        Register a new maintenance center to manage your fleet services.
+    </p>
+
+</div>
+
+<div class="ah-card reveal">
+
+    <div class="ah-card-body p-4 p-md-5">
+
+        <form asp-controller="ServiceCenter"
+              asp-action="AddNew"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger">
+            </div>
+
+            <partial name="_ServiceCenterFormPV"
+                     model="Model" />
+
+            <div class="ah-divider my-4"></div>
+
+            <div class="d-flex gap-3">
+
+                <a asp-controller="ServiceCenter"
+                   asp-action="GetAll"
+                   class="btn btn-ghost w-50">
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="btn btn-ah w-50">
+                    Submit
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
+
+}

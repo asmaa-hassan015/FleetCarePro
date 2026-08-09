@@ -1,0 +1,6 @@
+﻿@model List<FleetCarePro.Models.Vehicle>
+
+@foreach (var vehicle in Model)
+{
+    <partial name="_VehicleCard" model="vehicle" />
+}

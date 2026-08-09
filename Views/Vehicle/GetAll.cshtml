@@ -1,0 +1,334 @@
+﻿@model FleetCarePro.Helpers.PaginatedList<FleetCarePro.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Vehicles";
+
+    var statusSummary =
+        ViewBag.StatusSummary as Dictionary<string, int>
+        ?? new Dictionary<string, int>();
+}
+
+
+@if (TempData["Message"] != null)
+{
+    <div class="mb-4 p-3 d-flex align-items-center gap-2"
+         style="background: rgba(30,196,122,0.1);
+        border: 1px solid rgba(30,196,122,0.4);
+        color: #7ff0b8;
+        border-radius: 10px;
+        font-size: .95rem;">
+
+        <svg width="18"
+             height="18"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2">
+
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l3 3 5-6" />
+
+        </svg>
+
+        @TempData["Message"]
+
+    </div>
+}
+
+
+<!-- Toolbar -->
+
+<div class="ah-toolbar mb-4">
+
+    <div class="d-flex gap-2 flex-wrap">
+
+        @if (User.IsInRole("Admin") ||
+             User.IsInRole("FleetManager"))
+        {
+            <a asp-controller="Vehicle"
+               asp-action="Add"
+               class="btn btn-ah btn-sm">
+
+                <svg width="15"
+                     height="15"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     class="me-1">
+
+                    <path d="M12 5v14M5 12h14" />
+
+                </svg>
+
+                Add Vehicle
+
+            </a>
+        }
+
+    </div>
+
+
+    @if (statusSummary.Any())
+    {
+        <div class="d-flex gap-2 flex-wrap align-items-center">
+
+            @foreach (var status in statusSummary)
+            {
+                <span style="font-size:.78rem;
+                    font-weight:600;
+                    padding:.3rem .75rem;
+                    border-radius:999px;
+                    border:1px solid var(--ah-line);
+                    color:var(--ah-silver);
+                    background:var(--ah-surface);">
+
+                    @status.Key: @status.Value
+
+                </span>
+            }
+
+        </div>
+    }
+
+</div>
+
+
+<!-- Filters -->
+
+<div class="d-flex flex-wrap gap-3 mb-4 p-3"
+     style="background:var(--ah-surface);
+    border:1px solid var(--ah-line);
+    border-radius:var(--ah-radius);">
+
+
+    <div style="min-width:200px;">
+
+        <label for="statusFilter"
+               class="form-label">
+
+            Filter by Status
+
+        </label>
+
+        <select id="statusFilter"
+                class="form-control ah-input">
+
+            <option value="">
+                -- All Statuses --
+            </option>
+
+            <option value="Active">
+                Active
+            </option>
+
+            <option value="InService">
+                In Service
+            </option>
+
+            <option value="Decommissioned">
+                Decommissioned
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div style="min-width:200px;">
+
+        <label for="makeFilter"
+               class="form-label">
+
+            Filter by Make
+
+        </label>
+
+        <input type="text"
+               id="makeFilter"
+               class="form-control ah-input"
+               placeholder="e.g. Toyota" />
+
+    </div>
+
+</div>
+
+
+<!-- Vehicle Cards -->
+
+<div class="ah-inv-grid"
+     id="vehicleTableBody">
+
+    @foreach (var vehicle in Model)
+    {
+        <partial name="_VehicleCard"
+                 model="vehicle" />
+    }
+
+</div>
+
+
+@if (!Model.Any())
+{
+    <div class="ah-empty">
+        No vehicles found.
+    </div>
+}
+
+
+<!-- Pagination -->
+
+<div class="d-flex justify-content-between align-items-center mt-4">
+
+    @if (Model.HasPreviousPage)
+    {
+        <a asp-controller="Vehicle"
+           asp-action="GetAll"
+           asp-route-pageIndex="@(Model.PageIndex - 1)"
+           class="btn btn-ghost btn-sm">
+
+            &laquo; Previous
+
+        </a>
+    }
+    else
+    {
+        <span class="btn btn-ghost btn-sm disabled">
+            &laquo; Previous
+        </span>
+    }
+
+
+    <span style="color:var(--ah-muted);
+        font-size:.9rem;">
+
+        Page
+
+        <strong style="color:var(--ah-white);">
+            @Model.PageIndex
+        </strong>
+
+        of
+
+        <strong style="color:var(--ah-white);">
+            @Model.TotalPages
+        </strong>
+
+    </span>
+
+
+    @if (Model.HasNextPage)
+    {
+        <a asp-controller="Vehicle"
+           asp-action="GetAll"
+           asp-route-pageIndex="@(Model.PageIndex + 1)"
+           class="btn btn-ghost btn-sm">
+
+            Next &raquo;
+
+        </a>
+    }
+    else
+    {
+        <span class="btn btn-ghost btn-sm disabled">
+            Next &raquo;
+        </span>
+    }
+
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        const statusFilter =
+            document.getElementById("statusFilter");
+
+        const makeFilter =
+            document.getElementById("makeFilter");
+
+        const tableBody =
+            document.getElementById("vehicleTableBody");
+
+        let debounceTimer;
+
+
+        function applyFilter() {
+
+            const status =
+                statusFilter.value;
+
+            const make =
+                makeFilter.value;
+
+
+            const params =
+                new URLSearchParams();
+
+
+            if (status) {
+                params.append("status", status);
+            }
+
+
+            if (make) {
+                params.append("make", make);
+            }
+
+
+            fetch(
+                '@Url.Action("Filter", "Vehicle")?' +
+                params.toString()
+            )
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "Filter request failed."
+                        );
+                    }
+
+                    return response.text();
+
+                })
+                .then(html => {
+
+                    tableBody.innerHTML = html;
+
+                })
+                .catch(error => {
+
+                    console.error(
+                        "Filter failed:",
+                        error
+                    );
+
+                });
+
+        }
+
+
+        statusFilter.addEventListener(
+            "change",
+            applyFilter
+        );
+
+
+        makeFilter.addEventListener(
+            "input",
+            function() {
+
+                clearTimeout(debounceTimer);
+
+                debounceTimer =
+                    setTimeout(
+                        applyFilter,
+                        300
+                    );
+
+            }
+        );
+
+    </script>
+}

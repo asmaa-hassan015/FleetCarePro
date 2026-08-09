@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Page Not Found";
+}
+
+<div class="container d-flex justify-content-center align-items-center"
+     style="min-height: 90vh;">
+
+    <div class="text-center" style="max-width: 480px;">
+
+        <span class="ah-eyebrow center d-inline-flex">
+            Error 404
+        </span>
+
+        <h1 style="font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--ah-blue-bright);
+            margin-bottom: .5rem;">
+            404
+        </h1>
+
+        <h3 class="mb-3">
+            Page Not Found
+        </h3>
+
+        <p style="color: var(--ah-muted); margin-bottom: 2rem;">
+            The page you're looking for doesn't exist
+            or may have been moved.
+        </p>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-ah">
+            Back to Home
+        </a>
+
+    </div>
+
+</div>

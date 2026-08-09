@@ -1,0 +1,134 @@
+﻿@model FleetCarePro.Models.ServiceCenter
+
+@{
+    ViewData["Title"] = "Service Center Details";
+}
+
+<div class="ah-section-head mb-5 text-center">
+
+    <span class="ah-eyebrow center d-inline-flex">
+        FleetCare Pro
+    </span>
+
+    <h2 class="ah-section-title">
+        Service Center Details
+    </h2>
+
+    <p class="ah-section-sub mx-auto">
+        Complete information about this maintenance center.
+    </p>
+
+</div>
+
+<div class="ah-card reveal">
+
+    <div class="ah-card-body p-4 p-md-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h3 class="ah-card-title mb-0"
+                style="font-size: 1.5rem;">
+                @Model.Name
+            </h3>
+
+            @if (Model.IsActive)
+            {
+                <span class="ah-pill"
+                      style="background:rgba(30,196,122,.9); color:#04150c;">
+                    Active
+                </span>
+            }
+            else
+            {
+                <span class="ah-pill"
+                      style="background:rgba(125,135,152,.6); color:white;">
+                    Inactive
+                </span>
+            }
+
+        </div>
+
+        <div class="mb-4"
+             style="color: var(--ah-silver); line-height: 1.8;">
+
+            <p class="mb-2">
+                <strong>Phone:</strong>
+                @(string.IsNullOrEmpty(Model.PhoneNumber)
+                    ? "—"
+                    : Model.PhoneNumber)
+            </p>
+
+            <p class="mb-2">
+                <strong>Email:</strong>
+                @(string.IsNullOrEmpty(Model.Email)
+                    ? "—"
+                    : Model.Email)
+            </p>
+
+            <p class="mb-2">
+                <strong>Address:</strong>
+                @(string.IsNullOrEmpty(Model.Address)
+                    ? "—"
+                    : Model.Address)
+            </p>
+
+            <p class="mb-0">
+                <strong>Service Records:</strong>
+                @(Model.ServiceRecords?.Count() ?? 0)
+            </p>
+
+        </div>
+
+        @if (Model.VendorServices != null &&
+             Model.VendorServices.Any())
+        {
+            <div class="mb-4">
+
+                <strong style="color: var(--ah-silver);">
+                    Services Offered:
+                </strong>
+
+                <div class="d-flex flex-wrap gap-2 mt-2">
+
+                    @foreach (var vs in Model.VendorServices)
+                    {
+                        <span class="ah-pill"
+                              style="background:var(--ah-charcoal);
+                            color:var(--ah-silver);">
+
+                            @(vs.ServiceCategory?.CategoryName ?? "Unknown Service")
+
+                        </span>
+                    }
+
+                </div>
+
+            </div>
+        }
+
+        <div class="ah-divider my-4"></div>
+
+        <div class="d-flex justify-content-between">
+
+            <a asp-controller="ServiceCenter"
+               asp-action="GetAll"
+               class="btn btn-ghost px-4">
+                Back to List
+            </a>
+
+            @if (User.IsInRole("Admin") ||
+                 User.IsInRole("FleetManager"))
+            {
+                <a asp-controller="ServiceCenter"
+                   asp-action="Update"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-ah px-4">
+                    Edit Center
+                </a>
+            }
+
+        </div>
+
+    </div>
+
+</div>

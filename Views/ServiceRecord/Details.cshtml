@@ -1,0 +1,438 @@
+﻿@model FleetCarePro.Models.ServiceRecord
+
+@{
+    ViewData["Title"] = "Service Record Details";
+}
+
+<div class="container">
+
+    <div class="ah-page-head mb-4">
+
+        <nav class="ah-breadcrumb" aria-label="Breadcrumb">
+
+            <a asp-controller="Home"
+               asp-action="Index">
+                Home
+            </a>
+
+            <span class="sep">/</span>
+
+            <a asp-controller="ServiceRecord"
+               asp-action="GetAll">
+                Service Records
+            </a>
+
+            <span class="sep">/</span>
+
+            <span>Details</span>
+
+        </nav>
+
+
+        <h1 class="ah-section-title">
+            Service Record Details
+        </h1>
+
+        <p class="ah-section-sub">
+            Detailed view and breakdown for record #@Model.Id
+        </p>
+
+    </div>
+
+
+    <div class="ah-card reveal mb-4">
+
+        <div class="ah-card-body p-4 p-md-5">
+
+
+            <!-- Record Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <h3 class="ah-card-title mb-0"
+                    style="font-size:1.3rem;">
+                    Record #@Model.Id
+                </h3>
+
+
+                @{
+                    var detailStatusStyle = Model.Status switch
+                    {
+                        ServiceRecordStatus.Pending =>
+                            "background:rgba(255,180,0,.9);color:#04150c;",
+
+                        ServiceRecordStatus.Approved =>
+                            "background:rgba(47,107,255,.9);color:#04150c;",
+
+                        ServiceRecordStatus.Completed =>
+                            "background:rgba(30,196,122,.9);color:#04150c;",
+
+                        ServiceRecordStatus.Cancelled =>
+                            "background:rgba(255,90,95,.9);color:#04150c;",
+
+                        _ => "background:rgba(125,135,152,.6);color:white;"
+                    };
+                }
+
+                <span class="ah-pill"
+                      style="@detailStatusStyle
+                        font-size:.75rem;
+                        padding:.3rem .7rem;">
+                    @Model.Status
+                </span>
+
+            </div>
+
+
+            <!-- Vehicle / Service Center -->
+            <div class="row g-3 mb-4">
+
+
+                <div class="col-md-6">
+
+                    <div class="p-3"
+                         style="background:var(--ah-surface,#151922);
+                        border:1px solid var(--ah-line,#333);
+                        border-radius:10px;
+                        height:100%;">
+
+                        <span style="color:var(--ah-muted);
+                            font-size:.85rem;
+                            display:block;
+                            margin-bottom:.25rem;">
+                            Vehicle
+                        </span>
+
+
+                        <strong style="color:var(--ah-white);
+                            display:block;
+                            font-size:1.05rem;">
+
+                            @(Model.Vehicle != null
+                                ? $"{Model.Vehicle.Make} {Model.Vehicle.Model}"
+                                : "Unknown Vehicle")
+
+                        </strong>
+
+
+                        <span style="color:var(--ah-silver);
+                            font-size:.8rem;">
+
+                            Plate:
+                            @(Model.Vehicle?.LicensePlate ?? "—")
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="p-3"
+                         style="background:var(--ah-surface,#151922);
+                        border:1px solid var(--ah-line,#333);
+                        border-radius:10px;
+                        height:100%;">
+
+                        <span style="color:var(--ah-muted);
+                            font-size:.85rem;
+                            display:block;
+                            margin-bottom:.25rem;">
+                            Service Center
+                        </span>
+
+
+                        <strong style="color:var(--ah-white);
+                            display:block;
+                            font-size:1.05rem;">
+
+                            @(Model.ServiceCenter?.Name ?? "Unknown Service Center")
+
+                        </strong>
+
+
+                        <span style="color:var(--ah-silver);
+                            font-size:.8rem;">
+
+                            <i class="fas fa-map-marker-alt me-1"></i>
+                            Partner Workshop
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Service Information -->
+            <div class="row g-3 mb-4">
+
+
+                <div class="col-sm-3 col-6">
+
+                    <div class="p-3"
+                         style="background:var(--ah-surface,#151922);
+                        border:1px solid var(--ah-line,#333);
+                        border-radius:10px;">
+
+                        <span style="color:var(--ah-muted);
+                            font-size:.8rem;
+                            display:block;">
+                            Service Date
+                        </span>
+
+                        <strong style="color:var(--ah-white);
+                            font-size:.95rem;">
+
+                            @Model.ServiceDate.ToShortDateString()
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-sm-3 col-6">
+
+                    <div class="p-3"
+                         style="background:var(--ah-surface,#151922);
+                        border:1px solid var(--ah-line,#333);
+                        border-radius:10px;">
+
+                        <span style="color:var(--ah-muted);
+                            font-size:.8rem;
+                            display:block;">
+                            Current Mileage
+                        </span>
+
+                        <strong style="color:var(--ah-white);
+                            font-size:.95rem;">
+
+                            @Model.CurrentMileage.ToString("N0") km
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-sm-6">
+
+                    <div class="p-3"
+                         style="background:var(--ah-surface,#151922);
+                        border:1px solid var(--ah-line,#333);
+                        border-radius:10px;">
+
+                        <span style="color:var(--ah-muted);
+                            font-size:.8rem;
+                            display:block;">
+                            Total Cost
+                        </span>
+
+                        <strong style="color:#7ff0b8;
+                            font-size:1.1rem;">
+
+                            @Model.TotalCost.ToString("C")
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Notes -->
+            @if (!string.IsNullOrWhiteSpace(Model.Notes))
+            {
+                <div class="p-3 mb-4"
+                     style="background:var(--ah-surface,#151922);
+                    border:1px solid var(--ah-line,#333);
+                    border-radius:10px;">
+
+                    <span style="color:var(--ah-muted);
+                        font-size:.85rem;
+                        display:block;
+                        margin-bottom:.25rem;">
+                        Notes & Remarks
+                    </span>
+
+                    <p style="color:var(--ah-silver);
+                        margin-bottom:0;">
+                        @Model.Notes
+                    </p>
+
+                </div>
+            }
+
+
+            <!-- Invoice -->
+            @if (!string.IsNullOrWhiteSpace(Model.InvoiceDocumentPath))
+            {
+                <div class="d-flex align-items-center
+                    justify-content-between
+                    p-3 mb-4"
+                     style="background:var(--ah-surface,#151922);
+                    border:1px solid var(--ah-line,#333);
+                    border-radius:10px;">
+
+                    <div>
+
+                        <strong style="color:var(--ah-white);
+                            display:block;
+                            font-size:.9rem;">
+                            Invoice Document
+                        </strong>
+
+                        <span style="color:var(--ah-muted);
+                            font-size:.8rem;">
+                            Attached receipt or bill file
+                        </span>
+
+                    </div>
+
+
+                    <a href="@Model.InvoiceDocumentPath"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn btn-ghost btn-sm"
+                       style="border-color:rgba(255,255,255,.2);">
+
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        View Document
+
+                    </a>
+
+                </div>
+            }
+
+
+            <div class="ah-divider my-4"></div>
+
+
+            <!-- Service Line Items -->
+            <h5 class="mb-3"
+                style="color:var(--ah-white);
+                font-size:1.1rem;">
+                Service Line Items
+            </h5>
+
+
+            <div class="table-responsive mb-4">
+
+                <table class="table table-dark table-hover
+                    mb-0 align-middle"
+                       style="background:transparent;">
+
+                    <thead>
+
+                        <tr style="border-bottom:1px solid var(--ah-line);
+                            color:var(--ah-silver);
+                            font-size:.8rem;
+                            text-transform:uppercase;">
+
+                            <th class="py-2 px-3">
+                                Category
+                            </th>
+
+                            <th class="py-2 px-3">
+                                Description
+                            </th>
+
+                            <th class="py-2 px-3 text-end">
+                                Cost
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @if (Model.ServiceLineItems != null &&
+                             Model.ServiceLineItems.Any())
+                        {
+                            @foreach (var item in Model.ServiceLineItems)
+                            {
+                                <tr style="border-bottom:1px solid var(--ah-line);">
+
+                                    <td class="py-2 px-3 fw-semibold"
+                                        style="color:var(--ah-white);">
+
+                                        @(item.ServiceCategory?.CategoryName ?? "—")
+
+                                    </td>
+
+
+                                    <td class="py-2 px-3"
+                                        style="color:var(--ah-silver);">
+
+                                        @(string.IsNullOrWhiteSpace(item.Description)
+                                            ? "—"
+                                            : item.Description)
+
+                                    </td>
+
+
+                                    <td class="py-2 px-3 text-end fw-bold"
+                                        style="color:#7ff0b8;">
+
+                                        @item.Cost.ToString("C")
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="3"
+                                    class="text-center py-3"
+                                    style="color:var(--ah-muted);">
+
+                                    No line items added for this service record.
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="ah-divider my-4"></div>
+
+
+            <!-- Actions -->
+            <div class="d-flex justify-content-end">
+
+                <a asp-controller="ServiceRecord"
+                   asp-action="GetAll"
+                   class="btn btn-ghost px-4">
+
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Back to List
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+    ViewData["HideNav"] = true;
+}
+
+<div class="text-center">
+
+    <span class="ah-eyebrow center d-inline-flex">
+        Error 403
+    </span>
+
+    <h3 class="mb-3">
+        Access <span class="text-blue">Denied</span>
+    </h3>
+
+    <p style="color: var(--ah-muted);">
+        You do not have permission to access this page.
+        Please contact your fleet administrator if you believe
+        you should have access.
+    </p>
+
+    <div class="d-flex justify-content-center gap-2 mt-4">
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-ah">
+            Back to Home
+        </a>
+
+        <a asp-controller="Account"
+           asp-action="Login"
+           class="btn btn-outline-secondary">
+            Login
+        </a>
+
+    </div>
+
+</div>

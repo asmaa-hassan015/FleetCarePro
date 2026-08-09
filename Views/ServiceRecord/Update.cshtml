@@ -1,0 +1,561 @@
+﻿@model ServiceRecordViewModel
+
+@{
+    ViewData["Title"] = "Update Service Record";
+    int recordId = Convert.ToInt32(ViewBag.RecordId ?? 0);
+}
+
+<h1 class="ah-section-title">Update Service Record</h1>
+
+<p class="ah-section-sub">
+    Modify details and line items for record #@recordId
+</p>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div asp-validation-summary="All"
+         class="text-danger mb-3">
+    </div>
+}
+
+<form asp-controller="ServiceRecord"
+      asp-action="Update"
+      asp-route-id="@recordId"
+      method="post"
+      enctype="multipart/form-data">
+
+    @Html.AntiForgeryToken()
+
+    <!-- Vehicle / Service Center / Date -->
+
+    <div class="row g-3 mb-3">
+
+        <div class="col-md-4">
+
+            <label asp-for="VehicleId"
+                   class="form-label"
+                   style="color: var(--ah-silver); font-size: .9rem;">
+                Vehicle
+            </label>
+
+            <select asp-for="VehicleId"
+                    class="form-control"
+                    style="background: var(--ah-surface, #151922);
+                           color: var(--ah-white);
+                           border-color: var(--ah-line, #333);">
+
+                <option value="">-- Select Vehicle --</option>
+
+                @if (Model.Vehicles != null)
+                {
+                    foreach (var vehicle in Model.Vehicles)
+                    {
+                        <option value="@vehicle.Id">
+                            @vehicle.Make @vehicle.Model (@vehicle.LicensePlate)
+                        </option>
+                    }
+                }
+
+            </select>
+
+            <span asp-validation-for="VehicleId"
+                  class="text-danger"
+                  style="font-size: .85rem;">
+            </span>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <label asp-for="ServiceCenterId"
+                   class="form-label"
+                   style="color: var(--ah-silver); font-size: .9rem;">
+                Service Center
+            </label>
+
+            <select asp-for="ServiceCenterId"
+                    class="form-control"
+                    style="background: var(--ah-surface, #151922);
+                           color: var(--ah-white);
+                           border-color: var(--ah-line, #333);">
+
+                <option value="">-- Select Service Center --</option>
+
+                @if (Model.ServiceCenters != null)
+                {
+                    foreach (var center in Model.ServiceCenters)
+                    {
+                        <option value="@center.Id">
+                            @center.Name
+                        </option>
+                    }
+                }
+
+            </select>
+
+            <span asp-validation-for="ServiceCenterId"
+                  class="text-danger"
+                  style="font-size: .85rem;">
+            </span>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <label asp-for="ServiceDate"
+                   class="form-label"
+                   style="color: var(--ah-silver); font-size: .9rem;">
+                Service Date
+            </label>
+
+            <input asp-for="ServiceDate"
+                   type="date"
+                   class="form-control"
+                   style="background: var(--ah-surface, #151922);
+                          color: var(--ah-white);
+                          border-color: var(--ah-line, #333);" />
+
+            <span asp-validation-for="ServiceDate"
+                  class="text-danger"
+                  style="font-size: .85rem;">
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- Mileage / Notes -->
+
+    <div class="row g-3 mb-3">
+
+        <div class="col-md-6">
+
+            <label asp-for="CurrentMileage"
+                   class="form-label"
+                   style="color: var(--ah-silver); font-size: .9rem;">
+                Current Mileage
+            </label>
+
+            <input asp-for="CurrentMileage"
+                   type="number"
+                   class="form-control"
+                   style="background: var(--ah-surface, #151922);
+                          color: var(--ah-white);
+                          border-color: var(--ah-line, #333);" />
+
+            <span asp-validation-for="CurrentMileage"
+                  class="text-danger"
+                  style="font-size: .85rem;">
+            </span>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+            <label asp-for="Notes"
+                   class="form-label"
+                   style="color: var(--ah-silver); font-size: .9rem;">
+                Notes
+            </label>
+
+            <input asp-for="Notes"
+                   class="form-control"
+                   style="background: var(--ah-surface, #151922);
+                          color: var(--ah-white);
+                          border-color: var(--ah-line, #333);"
+                   placeholder="Add any remarks..." />
+
+            <span asp-validation-for="Notes"
+                  class="text-danger"
+                  style="font-size: .85rem;">
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- Invoice -->
+
+    <div class="mb-4">
+
+        <label asp-for="InvoiceDocument"
+               class="form-label"
+               style="color: var(--ah-silver); font-size: .9rem;">
+            Invoice Document
+        </label>
+
+        <input asp-for="InvoiceDocument"
+               type="file"
+               class="form-control"
+               style="background: var(--ah-surface, #151922);
+                      color: var(--ah-white);
+                      border-color: var(--ah-line, #333);"
+               accept=".pdf,.jpg,.jpeg,.png" />
+
+        <span asp-validation-for="InvoiceDocument"
+              class="text-danger"
+              style="font-size: .85rem;">
+        </span>
+
+    </div>
+
+
+    <div class="ah-divider my-4"></div>
+
+
+    <!-- Service Line Items -->
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h5 class="mb-0"
+            style="color: var(--ah-white); font-size: 1.1rem;">
+            Service Line Items
+        </h5>
+
+        <button type="button"
+                id="addLineItemBtn"
+                class="btn btn-ghost btn-sm"
+                style="border-color: rgba(255,255,255,0.2);">
+            + Add Line Item
+        </button>
+
+    </div>
+
+
+    <div class="table-responsive mb-4">
+
+        <table class="table table-dark table-hover mb-0 align-middle"
+               id="lineItemsTable"
+               style="background: transparent;">
+
+            <thead>
+
+                <tr style="border-bottom: 1px solid var(--ah-line);
+                           color: var(--ah-silver);
+                           font-size: .8rem;
+                           text-transform: uppercase;">
+
+                    <th class="py-2 px-3" style="width:35%;">
+                        Category
+                    </th>
+
+                    <th class="py-2 px-3" style="width:40%;">
+                        Description
+                    </th>
+
+                    <th class="py-2 px-3" style="width:15%;">
+                        Cost
+                    </th>
+
+                    <th class="py-2 px-3 text-center" style="width:10%;">
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="lineItemsBody">
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="ah-divider my-4"></div>
+
+
+    <!-- Buttons -->
+
+    <div class="d-flex gap-3">
+
+        <a asp-controller="ServiceRecord"
+           asp-action="GetAll"
+           class="btn btn-ghost w-50 text-center">
+            Cancel
+        </a>
+
+        <button type="submit"
+                class="btn btn-ah w-50"
+                style="border-color: rgba(255,180,0,0.4);
+                       color: #ffd166;">
+            Update Service Record
+        </button>
+
+    </div>
+
+</form>
+
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        // ==============================
+        // Service Categories
+        // ==============================
+
+        const serviceCategories = @Html.Raw(
+            System.Text.Json.JsonSerializer.Serialize(
+                Model.ServiceCategories ?? new List<FleetCarePro.Models.ServiceCategory>()
+            )
+        );
+
+
+
+        const existingLineItems = @Html.Raw(
+            System.Text.Json.JsonSerializer.Serialize(
+                Model.ServiceLineItems ?? new List<FleetCarePro.ViewModels.ServiceLineItemViewModel>()
+            )
+        );
+
+
+        // ==============================
+        // Escape HTML
+        // ==============================
+
+        function escapeHtml(value) {
+
+            const div = document.createElement("div");
+
+            div.textContent = value ?? "";
+
+            return div.innerHTML;
+        }
+
+
+        // ==============================
+        // Build Category Options
+        // ==============================
+
+        function buildCategoryOptions(selectedId) {
+
+            let options =
+                '<option value="">-- Select Category --</option>';
+
+            serviceCategories.forEach(function (category) {
+
+                const selected =
+                    category.Id == selectedId
+                        ? " selected"
+                        : "";
+
+                options +=
+                    '<option value="' +
+                    category.Id +
+                    '"' +
+                    selected +
+                    '>' +
+                    escapeHtml(category.CategoryName) +
+                    '</option>';
+
+            });
+
+            return options;
+        }
+
+
+        // ==============================
+        // Add Line Item Row
+        // ==============================
+
+        // Adds a row WITHOUT an index in the name attributes.
+        // The real, gap-free index is assigned by reindexRows()
+        // right after, so ServiceLineItems[0], [1], [2]... stay
+        // contiguous no matter what gets added/removed.
+        function addLineItemRow(categoryId, description, cost) {
+
+            const tbody =
+                document.getElementById("lineItemsBody");
+
+            const row =
+                document.createElement("tr");
+
+            row.style.borderBottom =
+                "1px solid var(--ah-line)";
+
+            row.className = "line-item-row";
+
+
+            row.innerHTML =
+
+                '<td class="py-2 px-3">' +
+
+                '<select data-field="ServiceCategoryId" ' +
+
+                'class="form-control form-control-sm" ' +
+
+                'style="background: var(--ah-surface, #151922); ' +
+                'color: var(--ah-white); ' +
+                'border-color: var(--ah-line, #333);">' +
+
+                buildCategoryOptions(categoryId) +
+
+                '</select>' +
+
+                '</td>' +
+
+
+                '<td class="py-2 px-3">' +
+
+                '<input data-field="Description" ' +
+
+                'class="form-control form-control-sm" ' +
+
+                'style="background: var(--ah-surface, #151922); ' +
+                'color: var(--ah-white); ' +
+                'border-color: var(--ah-line, #333);" ' +
+
+                'value="' +
+                escapeHtml(description) +
+                '" />' +
+
+                '</td>' +
+
+
+                '<td class="py-2 px-3">' +
+
+                '<input data-field="Cost" ' +
+
+                'type="number" ' +
+                'step="0.01" ' +
+
+                'class="form-control form-control-sm" ' +
+
+                'style="background: var(--ah-surface, #151922); ' +
+                'color: var(--ah-white); ' +
+                'border-color: var(--ah-line, #333);" ' +
+
+                'value="' +
+                (cost ?? 0) +
+                '" />' +
+
+                '</td>' +
+
+
+                '<td class="py-2 px-3 text-center">' +
+
+                '<button type="button" ' +
+
+                'class="btn btn-ghost btn-sm removeLineItemBtn" ' +
+
+                'style="border-color: rgba(255,90,95,0.4); ' +
+                'color: #ff8488; padding: .2rem .5rem;" ' +
+
+                'title="Remove">' +
+
+                'X' +
+
+                '</button>' +
+
+                '</td>';
+
+
+            tbody.appendChild(row);
+
+            reindexRows();
+        }
+
+
+        // Walks every row currently in the table (in DOM order)
+        // and rewrites its "name" attributes using a fresh,
+        // contiguous 0..N-1 index. Runs after every add and
+        // every remove, so the model binder never sees a gap.
+        function reindexRows() {
+
+            const rows =
+                document.querySelectorAll(
+                    "#lineItemsBody .line-item-row");
+
+            rows.forEach(function (row, index) {
+
+                row.querySelectorAll("[data-field]")
+                    .forEach(function (field) {
+
+                        const fieldName =
+                            field.getAttribute("data-field");
+
+                        field.name =
+                            "ServiceLineItems[" +
+                            index +
+                            "]." +
+                            fieldName;
+
+                    });
+
+            });
+        }
+
+
+        // ==============================
+        // Add Button
+        // ==============================
+
+        document
+            .getElementById("addLineItemBtn")
+            .addEventListener("click", function () {
+
+                addLineItemRow("", "", 0);
+
+            });
+
+
+        // ==============================
+        // Remove Button
+        // ==============================
+
+        document
+            .getElementById("lineItemsTable")
+            .addEventListener("click", function (event) {
+
+                const button =
+                    event.target.closest(".removeLineItemBtn");
+
+                if (button) {
+
+                    button
+                        .closest("tr")
+                        .remove();
+
+                    reindexRows();
+
+                }
+
+            });
+
+
+        // ==============================
+        // Load Existing Items
+        // ==============================
+
+        if (existingLineItems && existingLineItems.length > 0) {
+
+            existingLineItems.forEach(function (item) {
+
+                addLineItemRow(
+                    item.ServiceCategoryId,
+                    item.Description,
+                    item.Cost
+                );
+
+            });
+
+        }
+        else {
+
+            addLineItemRow("", "", 0);
+
+        }
+
+    </script>
+}

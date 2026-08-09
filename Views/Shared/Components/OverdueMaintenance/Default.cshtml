@@ -1,0 +1,151 @@
+﻿@model List<FleetCarePro.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Overdue Maintenance";
+}
+
+<div class="container">
+
+    <div class="ah-section-head mb-4 text-center">
+
+        <span class="ah-eyebrow center d-inline-flex"
+              style="border-color: rgba(255,90,95,0.4);
+            color: #ff8488;
+            background: rgba(255,90,95,0.08);">
+
+            Alerts
+
+        </span>
+
+        <h2 class="ah-section-title">
+            Overdue Maintenance
+        </h2>
+
+        <p class="ah-section-sub mx-auto">
+
+            Vehicles that require immediate maintenance attention
+            (@Model.Count vehicle@(Model.Count == 1 ? "" : "s")).
+
+        </p>
+
+    </div>
+
+
+    <div class="ah-card reveal p-0 overflow-hidden"
+         style="border-color: rgba(255,90,95,0.3);">
+
+        <div class="card-body p-0">
+
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+
+                    <p class="mb-0"
+                       style="color: var(--ah-silver);
+                        font-size: 1.05rem;">
+
+                        All vehicles are up to date with maintenance. 🎉
+
+                    </p>
+
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-dark table-hover mb-0 align-middle"
+                           style="background: transparent;">
+
+                        <thead>
+
+                            <tr style="border-bottom: 1px solid var(--ah-line);
+                                color: var(--ah-silver);
+                                font-size: .8rem;
+                                text-transform: uppercase;
+                                letter-spacing: .05em;">
+
+                                <th class="py-3 px-4">
+                                    Vehicle
+                                </th>
+
+                                <th class="py-3 px-4">
+                                    Plate
+                                </th>
+
+                                <th class="py-3 px-4">
+                                    Last Service
+                                </th>
+
+                                <th class="py-3 px-4 text-end">
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var v in Model)
+                            {
+                                var lastService = v.ServiceRecords != null &&
+                                                  v.ServiceRecords.Any()
+                                    ? v.ServiceRecords
+                                        .Max(sr => sr.ServiceDate)
+                                        .ToShortDateString()
+                                    : "Never serviced";
+
+                                <tr style="border-bottom: 1px solid var(--ah-line);">
+
+                                    <td class="py-3 px-4 fw-semibold"
+                                        style="color: var(--ah-white);">
+
+                                        @v.Make @v.Model
+
+                                    </td>
+
+                                    <td class="py-3 px-4"
+                                        style="color: var(--ah-silver);">
+
+                                        @v.LicensePlate
+
+                                    </td>
+
+                                    <td class="py-3 px-4"
+                                        style="color: var(--ah-silver);">
+
+                                        @lastService
+
+                                    </td>
+
+                                    <td class="py-3 px-4 text-end">
+
+                                        <a asp-controller="Vehicle"
+                                           asp-action="Details"
+                                           asp-route-id="@v.Id"
+                                           class="btn btn-ghost btn-sm"
+                                           style="border-color: rgba(255,90,95,0.4);
+                                            color: #ff8488;">
+
+                                            View
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

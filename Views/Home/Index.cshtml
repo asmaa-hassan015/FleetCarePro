@@ -1,0 +1,166 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="ah-hero" style="padding: 7.5rem 0 3rem;">
+
+    <div class="container">
+
+        <div class="row align-items-center g-5">
+
+            <!-- Hero Content -->
+            <div class="col-lg-6">
+
+                <span class="ah-hero-badge">
+                    <span class="dot" aria-hidden="true"></span>
+                    Fleet management, simplified
+                </span>
+
+                <h1 style="font-size: clamp(2rem, 4vw, 3.2rem);">
+                    Keep your fleet
+                    <span class="text-blue">running</span>, always.
+                </h1>
+
+                <p class="ah-hero-lead"
+                   style="margin-bottom: 1.2rem;">
+                    Track vehicle health, schedule maintenance,
+                    and monitor service costs across your fleet.
+                </p>
+
+                <div class="d-flex gap-3 flex-wrap">
+
+                    <a asp-controller="Vehicle"
+                       asp-action="GetAll"
+                       class="btn btn-ah">
+                        View Vehicles
+                    </a>
+
+                    <a asp-controller="ServiceRecord"
+                       asp-action="GetAll"
+                       class="btn btn-ghost">
+                        Service Records
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Hero Image -->
+            <div class="col-lg-6">
+
+                <figure class="ah-hero-figure m-0">
+
+                    <img src="~/img/hero-car.jpg"
+                         alt="Fleet vehicle"
+                         width="880"
+                         height="605"
+                         style="aspect-ratio: 16/10;">
+
+                    <figcaption class="ah-hero-price-tag">
+
+                        <span class="l">
+                            Fleet status
+                        </span>
+
+                        <span class="n">
+                            All systems active
+                        </span>
+
+                    </figcaption>
+
+                </figure>
+
+            </div>
+
+        </div>
+
+        <!-- Fleet Statistics -->
+        <div class="ah-stats"
+             role="list"
+             aria-label="Fleet at a glance"
+             style="margin-top: 2rem;">
+
+            <div class="ah-stat" role="listitem">
+
+                <div class="num">
+                    <span data-count="@ViewBag.VehiclesCount">
+                        @ViewBag.VehiclesCount
+                    </span>
+                </div>
+
+                <div class="lbl">
+                    Vehicles tracked
+                </div>
+
+            </div>
+
+            <div class="ah-stat" role="listitem">
+
+                <div class="num">
+                    <span data-count="@ViewBag.ServiceCentersCount">
+                        @ViewBag.ServiceCentersCount
+                    </span>
+                </div>
+
+                <div class="lbl">
+                    Service centers
+                </div>
+
+            </div>
+
+            <div class="ah-stat" role="listitem">
+
+                <div class="num">
+                    <span data-count="@ViewBag.ServiceCategoriesCount">
+                        @ViewBag.ServiceCategoriesCount
+                    </span>
+                </div>
+
+                <div class="lbl">
+                    Service categories
+                </div>
+
+            </div>
+
+            <div class="ah-stat" role="listitem">
+
+                <div class="num">
+
+                    <span data-count="@ViewBag.OnTimePercentage">
+                        @ViewBag.OnTimePercentage
+                    </span>
+
+                    <span class="suffix">
+                        %
+                    </span>
+
+                </div>
+
+                <div class="lbl">
+                    On-time maintenance
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Dashboard Widgets -->
+<section class="container" style="padding: 1rem 0 4rem;">
+
+    <div class="row g-4">
+
+        <div class="col-lg-6">
+            @await Component.InvokeAsync("FleetCostSummary")
+        </div>
+
+        <div class="col-lg-6">
+            @await Component.InvokeAsync("OverdueMaintenance")
+        </div>
+
+    </div>
+
+</section>

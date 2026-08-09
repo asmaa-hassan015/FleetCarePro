@@ -1,0 +1,263 @@
+﻿@model FleetCarePro.ViewModels.VehicleViewModel
+
+<div class="col-md-6">
+    <label asp-for="VIN"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        VIN
+    </label>
+
+    <input asp-for="VIN"
+           class="form-control ah-input"
+           maxlength="17"
+           placeholder="Enter VIN" />
+
+    <span asp-validation-for="VIN"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="col-md-6">
+    <label asp-for="LicensePlate"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        License Plate
+    </label>
+
+    <input asp-for="LicensePlate"
+           class="form-control ah-input"
+           placeholder="Enter license plate" />
+
+    <span asp-validation-for="LicensePlate"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="col-md-6">
+    <label asp-for="Make"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Make
+    </label>
+
+    <input asp-for="Make"
+           class="form-control ah-input"
+           placeholder="Vehicle make" />
+
+    <span asp-validation-for="Make"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="col-md-6">
+    <label asp-for="Model"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Model
+    </label>
+
+    <input asp-for="Model"
+           class="form-control ah-input"
+           placeholder="Vehicle model" />
+
+    <span asp-validation-for="Model"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="col-md-6">
+    <label asp-for="Year"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Year
+    </label>
+
+    <input asp-for="Year"
+           type="number"
+           class="form-control ah-input"
+           placeholder="2026" />
+
+    <span asp-validation-for="Year"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="col-md-6">
+    <label asp-for="PurchasePrice"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Purchase Price
+    </label>
+
+    <input asp-for="PurchasePrice"
+           type="number"
+           step="0.01"
+           class="form-control ah-input"
+           placeholder="0.00" />
+
+    <span asp-validation-for="PurchasePrice"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="col-md-6">
+    <label asp-for="Status"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Status
+    </label>
+
+    <select asp-for="Status"
+            class="form-select ah-input">
+
+        <option value="Active">
+            Active
+        </option>
+
+        <option value="InService">
+            In Service
+        </option>
+
+        <option value="Decommissioned">
+            Decommissioned
+        </option>
+
+    </select>
+
+    <span asp-validation-for="Status"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="col-md-6">
+    <label asp-for="Mileage"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Mileage
+    </label>
+
+    <input asp-for="Mileage"
+           type="number"
+           class="form-control ah-input"
+           placeholder="Mileage" />
+
+    <span asp-validation-for="Mileage"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="col-md-6">
+    <label asp-for="DriverId"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Assigned Driver
+    </label>
+
+    <select asp-for="DriverId"
+            class="form-select ah-input">
+
+        <option value="">
+            -- No Driver --
+        </option>
+
+        @foreach (var driver in Model.Drivers)
+        {
+            <option value="@driver.Id">
+                @driver.FullName
+            </option>
+        }
+
+    </select>
+
+    <span asp-validation-for="DriverId"
+          class="text-danger">
+    </span>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ExistingImageUrl))
+{
+    <div class="col-12 mt-3">
+
+        <label class="form-label"
+               style="color: var(--ah-silver);
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;">
+            Current Image
+        </label>
+
+        <div>
+            <img src="@Model.ExistingImageUrl"
+                 alt="Current vehicle image"
+                 class="rounded-3 border border-secondary"
+                 style="max-height: 120px;
+            max-width: 100%;
+            object-fit: cover;" />
+        </div>
+
+    </div>
+}
+
+<div class="col-12 mt-3">
+
+    <label asp-for="VehicleImage"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Vehicle Image
+    </label>
+
+    <input asp-for="VehicleImage"
+           type="file"
+           class="form-control ah-input"
+           accept=".jpg,.jpeg,.png" />
+
+    <span asp-validation-for="VehicleImage"
+          class="text-danger">
+    </span>
+
+    <small style="color: var(--ah-muted);">
+        Allowed formats: JPG, JPEG, PNG. Maximum size: 5 MB.
+    </small>
+
+</div>

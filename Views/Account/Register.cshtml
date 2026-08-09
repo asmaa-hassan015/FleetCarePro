@@ -1,0 +1,208 @@
+﻿@model FleetCarePro.ViewModels.RegisterVM
+
+@{
+    ViewData["Title"] = "Register";
+    ViewData["HideNav"] = true;
+}
+
+<div class="text-center mb-4">
+
+    <span class="ah-eyebrow center d-inline-flex">
+        Get started
+    </span>
+
+    <h3 class="mb-0">
+        Create your FleetCare<span class="text-blue">Pro</span> account
+    </h3>
+
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert"
+         style="background: rgba(255,90,95,.1);
+        border: 1px solid rgba(255,90,95,.4);
+        color:#ff8488;">
+
+        <div asp-validation-summary="All"></div>
+
+    </div>
+}
+
+<form asp-controller="Account"
+      asp-action="Register"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+
+            <label asp-for="FullName"
+                   class="form-label"
+                   style="color: var(--ah-silver);
+                font-size:.78rem;
+                font-weight:600;
+                letter-spacing:.06em;
+                text-transform:uppercase;">
+            </label>
+
+            <input asp-for="FullName"
+                   class="form-control"
+                   placeholder="John Doe"
+                   autocomplete="name"
+                   style="background: var(--ah-charcoal);
+            border: 1px solid var(--ah-line);
+            color: var(--ah-white);
+            border-radius: 9px;
+            padding: .8rem 1rem;" />
+
+            <span asp-validation-for="FullName"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+
+            <label asp-for="EmployeeId"
+                   class="form-label"
+                   style="color: var(--ah-silver);
+                font-size:.78rem;
+                font-weight:600;
+                letter-spacing:.06em;
+                text-transform:uppercase;">
+            </label>
+
+            <input asp-for="EmployeeId"
+                   class="form-control"
+                   placeholder="EMP-004"
+                   autocomplete="off"
+                   style="background: var(--ah-charcoal);
+            border: 1px solid var(--ah-line);
+            color: var(--ah-white);
+            border-radius: 9px;
+            padding: .8rem 1rem;" />
+
+            <span asp-validation-for="EmployeeId"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="Email"
+               class="form-label"
+               style="color: var(--ah-silver);
+            font-size:.78rem;
+            font-weight:600;
+            letter-spacing:.06em;
+            text-transform:uppercase;">
+        </label>
+
+        <input asp-for="Email"
+               class="form-control"
+               placeholder="you@fleetcare.com"
+               autocomplete="email"
+               style="background: var(--ah-charcoal);
+        border: 1px solid var(--ah-line);
+        color: var(--ah-white);
+        border-radius: 9px;
+        padding: .8rem 1rem;" />
+
+        <span asp-validation-for="Email"
+              class="text-danger">
+        </span>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+
+            <label asp-for="Password"
+                   class="form-label"
+                   style="color: var(--ah-silver);
+                font-size:.78rem;
+                font-weight:600;
+                letter-spacing:.06em;
+                text-transform:uppercase;">
+            </label>
+
+            <input asp-for="Password"
+                   class="form-control"
+                   placeholder="••••••••"
+                   autocomplete="new-password"
+                   style="background: var(--ah-charcoal);
+            border: 1px solid var(--ah-line);
+            color: var(--ah-white);
+            border-radius: 9px;
+            padding: .8rem 1rem;" />
+
+            <span asp-validation-for="Password"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+
+            <label asp-for="ConfirmPassword"
+                   class="form-label"
+                   style="color: var(--ah-silver);
+                font-size:.78rem;
+                font-weight:600;
+                letter-spacing:.06em;
+                text-transform:uppercase;">
+            </label>
+
+            <input asp-for="ConfirmPassword"
+                   class="form-control"
+                   placeholder="••••••••"
+                   autocomplete="new-password"
+                   style="background: var(--ah-charcoal);
+            border: 1px solid var(--ah-line);
+            color: var(--ah-white);
+            border-radius: 9px;
+            padding: .8rem 1rem;" />
+
+            <span asp-validation-for="ConfirmPassword"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+    </div>
+
+    <!--
+        Public registration creates a Driver account.
+        Admin and FleetManager roles must be assigned
+        by an authorized administrator.
+    -->
+
+    <button type="submit"
+            class="btn btn-ah w-100">
+        Register
+    </button>
+
+</form>
+
+<p class="text-center mt-4 mb-0"
+   style="color: var(--ah-muted);">
+
+    Already have an account?
+
+    <a asp-controller="Account"
+       asp-action="Login">
+        Login here
+    </a>
+
+</p>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Server Error";
+}
+
+<div class="container d-flex justify-content-center align-items-center"
+     style="min-height: 90vh;">
+
+    <div class="text-center" style="max-width: 480px;">
+
+        <span class="ah-eyebrow center d-inline-flex"
+              style="color: #ff8488;">
+            Error 500
+        </span>
+
+        <h1 style="font-size: clamp(3rem, 8vw, 5rem);
+            color: #ff8488;
+            margin-bottom: .5rem;">
+            500
+        </h1>
+
+        <h3 class="mb-3">
+            Something Went Wrong
+        </h3>
+
+        <p style="color: var(--ah-muted); margin-bottom: 2rem;">
+            An unexpected error occurred on our end.
+            Please try again later.
+        </p>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-ah">
+            Back to Home
+        </a>
+
+    </div>
+
+</div>

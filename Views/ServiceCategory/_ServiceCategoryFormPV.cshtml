@@ -1,0 +1,62 @@
+﻿@model ServiceCategory
+
+<div class="mb-3">
+    <label asp-for="CategoryName"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Category Name
+    </label>
+
+    <input asp-for="CategoryName"
+           class="form-control ah-input"
+           placeholder="Enter category name" />
+
+    <span asp-validation-for="CategoryName"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Description"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Description
+    </label>
+
+    <input asp-for="Description"
+           class="form-control ah-input"
+           placeholder="Enter description" />
+
+    <span asp-validation-for="Description"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="RecommendedIntervalMonths"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Recommended Interval (Months)
+    </label>
+
+    <input asp-for="RecommendedIntervalMonths"
+           type="number"
+           class="form-control ah-input"
+           placeholder="e.g. 6" />
+
+    <span asp-validation-for="RecommendedIntervalMonths"
+          class="text-danger">
+    </span>
+</div>

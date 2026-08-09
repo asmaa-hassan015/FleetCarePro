@@ -1,0 +1,75 @@
+﻿@model FleetCarePro.ViewModels.VehicleViewModel
+
+@{
+    ViewData["Title"] = "Update Vehicle";
+}
+
+<div class="ah-section-head mb-5">
+
+    <span class="ah-eyebrow">
+        FleetCare Pro
+    </span>
+
+    <h2 class="ah-section-title">
+        Update Vehicle
+    </h2>
+
+    <p class="ah-section-sub">
+        Update vehicle information and manage your fleet efficiently.
+    </p>
+
+</div>
+
+
+<div class="ah-card reveal">
+
+    <div class="ah-card-body">
+
+        <form asp-controller="Vehicle"
+              asp-action="Update"
+              method="post"
+              enctype="multipart/form-data">
+
+            @Html.AntiForgeryToken()
+
+            <input asp-for="Id" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger">
+            </div>
+
+
+            <div class="row g-3">
+
+                <partial name="_VehicleFormPV"
+                         model="Model" />
+
+            </div>
+
+
+            <div class="d-flex gap-3 mt-5">
+
+                <button type="submit"
+                        class="btn btn-ah">
+                    Update Vehicle
+                </button>
+
+                <a asp-controller="Vehicle"
+                   asp-action="GetAll"
+                   class="btn btn-ghost">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

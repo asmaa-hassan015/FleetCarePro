@@ -1,0 +1,97 @@
+﻿@model FleetCarePro.ViewModels.FleetCostSummaryVM
+
+@{
+    ViewData["Title"] = "Fleet Cost Summary";
+}
+
+<div class="container">
+
+    <div class="ah-section-head mb-4 text-center">
+
+        <span class="ah-eyebrow center d-inline-flex">
+            FleetCare Pro
+        </span>
+
+        <h2 class="ah-section-title">
+            Fleet Cost Summary
+        </h2>
+
+        <p class="ah-section-sub mx-auto">
+            Overview of maintenance expenses for @Model.MonthName.
+        </p>
+
+    </div>
+
+
+    <div class="ah-card reveal">
+
+        <div class="ah-card-body p-4 p-md-5">
+
+            <div class="row text-center g-4">
+
+                <!-- Total Cost -->
+                <div class="col-md-6">
+
+                    <div class="p-3"
+                         style="background: rgba(255,255,255,0.03);
+                        border: 1px solid var(--ah-line);
+                        border-radius: 12px;">
+
+                        <h3 class="mb-1"
+                            style="color: var(--ah-white);
+                            font-weight: 700;">
+
+                            @Model.TotalCostThisMonth.ToString("N2")
+
+                        </h3>
+
+                        <small style="color: var(--ah-silver);
+                            font-size: .85rem;
+                            text-transform: uppercase;
+                            letter-spacing: .05em;">
+
+                            Total Cost This Month
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Service Records -->
+                <div class="col-md-6">
+
+                    <div class="p-3"
+                         style="background: rgba(255,255,255,0.03);
+                        border: 1px solid var(--ah-line);
+                        border-radius: 12px;">
+
+                        <h3 class="mb-1"
+                            style="color: var(--ah-white);
+                            font-weight: 700;">
+
+                            @Model.RecordsCountThisMonth
+
+                        </h3>
+
+                        <small style="color: var(--ah-silver);
+                            font-size: .85rem;
+                            text-transform: uppercase;
+                            letter-spacing: .05em;">
+
+                            Service Records
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,310 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] — FleetCare Pro</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <link rel="stylesheet" href="~/css/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    @{
+        bool hideNav = ViewData["HideNav"] as bool? ?? false;
+    }
+
+    @if (!hideNav)
+    {
+        <header>
+
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3"
+                 style="background-color: var(--ah-surface, #161b22);
+                border-color: var(--ah-line, #30363d) !important;">
+
+                <div class="container-fluid px-4">
+
+                    <a class="navbar-brand fw-bold"
+                       asp-area=""
+                       asp-controller="Home"
+                       asp-action="Index"
+                       style="font-family: 'Space Grotesk', sans-serif;
+                        color: var(--ah-white, #f0f6fc);
+                        letter-spacing: .03em;">
+
+                        FleetCare<span style="color: #ffd166;">Pro</span>
+
+                    </a>
+
+
+                    <button class="navbar-toggler"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target=".navbar-collapse"
+                            aria-controls="navbarSupportedContent"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+
+                        <span class="navbar-toggler-icon"></span>
+
+                    </button>
+
+
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                        <ul class="navbar-nav flex-grow-1 ms-3 gap-2">
+
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Home"
+                                   asp-action="Index"
+                                   style="color: var(--ah-silver, #8b949e);">
+
+                                    Home
+
+                                </a>
+
+                            </li>
+
+
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="Vehicle"
+                                       asp-action="GetAll"
+                                       style="color: var(--ah-silver, #8b949e);">
+
+                                        Vehicles
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="ServiceRecord"
+                                       asp-action="GetAll"
+                                       style="color: var(--ah-silver, #8b949e);">
+
+                                        Service Records
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="ServiceCenter"
+                                       asp-action="GetAll"
+                                       style="color: var(--ah-silver, #8b949e);">
+
+                                        Service Centers
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="ServiceCategory"
+                                       asp-action="GetAll"
+                                       style="color: var(--ah-silver, #8b949e);">
+
+                                        Categories
+
+                                    </a>
+
+                                </li>
+                            }
+
+
+                            @if (User.IsInRole("Driver"))
+                            {
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="Vehicle"
+                                       asp-action="MyVehicles"
+                                       style="color: var(--ah-silver, #8b949e);">
+
+                                        My Vehicles
+
+                                    </a>
+
+                                </li>
+                            }
+
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="Admin"
+                                       asp-action="ManageUsers"
+                                       style="color: var(--ah-silver, #8b949e);">
+
+                                        Manage Users
+
+                                    </a>
+
+                                </li>
+                            }
+
+                        </ul>
+
+
+                        <ul class="navbar-nav">
+
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <li class="nav-item d-flex align-items-center">
+
+                                    <span class="nav-link"
+                                          style="color: var(--ah-silver, #8b949e);">
+
+                                        Hi, @User.Identity.Name
+
+                                    </span>
+
+                                </li>
+
+
+                                <li class="nav-item">
+
+                                    <form asp-controller="Account"
+                                          asp-action="Logout"
+                                          method="post"
+                                          class="d-flex">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit"
+                                                class="nav-link btn btn-link"
+                                                style="color: var(--ah-silver, #8b949e);">
+
+                                            Logout
+
+                                        </button>
+
+                                    </form>
+
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="Account"
+                                       asp-action="Login"
+                                       style="color: var(--ah-silver, #8b949e);">
+
+                                        Login
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="Account"
+                                       asp-action="Register"
+                                       style="color: var(--ah-silver, #8b949e);">
+
+                                        Register
+
+                                    </a>
+
+                                </li>
+                            }
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </nav>
+
+        </header>
+    }
+
+
+    <div class="container">
+
+        <main role="main" class="pb-3">
+
+            @RenderBody()
+
+        </main>
+
+    </div>
+
+
+    @if (!hideNav)
+    {
+        <footer class="py-4 text-center"
+                style="border-top: 1px solid var(--ah-line, #30363d);
+            background-color: var(--ah-surface, #161b22);
+            margin-top: 5rem;">
+
+            <div class="container"
+                 style="color: var(--ah-muted, #6e7681);
+                font-size: .85rem;">
+
+                &copy; 2026 -
+
+                <span style="color: var(--ah-white);
+                    font-weight: 600;">
+
+                    FleetCare<span style="color: #ffd166;">Pro</span>
+
+                </span>
+
+                — All Rights Reserved. -
+
+                <a asp-area=""
+                   asp-controller="Home"
+                   asp-action="Privacy"
+                   style="color: var(--ah-silver, #8b949e);
+                    text-decoration: none;
+                    margin-left: 5px;">
+
+                    Privacy
+
+                </a>
+
+            </div>
+
+        </footer>
+    }
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/main.js"
+            asp-append-version="true">
+    </script>
+
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false)
+</body>
+</html>

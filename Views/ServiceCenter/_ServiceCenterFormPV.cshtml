@@ -1,0 +1,155 @@
+﻿@model FleetCarePro.ViewModels.ServiceCenterViewModel
+
+<div class="mb-3">
+    <label asp-for="Name"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Name
+    </label>
+
+    <input asp-for="Name"
+           class="form-control ah-input"
+           placeholder="Enter service center name" />
+
+    <span asp-validation-for="Name"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="row g-3 mb-3">
+
+    <div class="col-md-6">
+        <label asp-for="PhoneNumber"
+               class="form-label"
+               style="color: var(--ah-silver);
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;">
+            Phone Number
+        </label>
+
+        <input asp-for="PhoneNumber"
+               class="form-control ah-input"
+               placeholder="Enter phone number" />
+
+        <span asp-validation-for="PhoneNumber"
+              class="text-danger">
+        </span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Email"
+               class="form-label"
+               style="color: var(--ah-silver);
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;">
+            Email
+        </label>
+
+        <input asp-for="Email"
+               class="form-control ah-input"
+               placeholder="Enter email address" />
+
+        <span asp-validation-for="Email"
+              class="text-danger">
+        </span>
+    </div>
+
+</div>
+
+<div class="mb-3">
+    <label asp-for="Address"
+           class="form-label"
+           style="color: var(--ah-silver);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;">
+        Address
+    </label>
+
+    <input asp-for="Address"
+           class="form-control ah-input"
+           placeholder="Enter address" />
+
+    <span asp-validation-for="Address"
+          class="text-danger">
+    </span>
+</div>
+
+<div class="mb-4 form-check">
+    <input asp-for="IsActive"
+           class="form-check-input" />
+
+    <label asp-for="IsActive"
+           class="form-check-label"
+           style="color: var(--ah-silver);">
+        Active
+    </label>
+
+    <span asp-validation-for="IsActive"
+          class="text-danger">
+    </span>
+</div>
+
+<label class="form-label"
+       style="color: var(--ah-silver);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;">
+    Services Offered
+</label>
+
+<div class="d-flex flex-column gap-2 p-3"
+     style="background:var(--ah-surface);
+    border:1px solid var(--ah-line);
+    border-radius:8px;">
+
+    @if (Model.ServiceCategories != null &&
+         Model.ServiceCategories.Any())
+    {
+        @foreach (var category in Model.ServiceCategories)
+        {
+            var isChecked =
+                Model.SelectedServiceCategoryIds != null &&
+                Model.SelectedServiceCategoryIds.Contains(category.Id);
+
+            <div class="form-check">
+
+                <input type="checkbox"
+                       class="form-check-input"
+                       name="SelectedServiceCategoryIds"
+                       value="@category.Id"
+                       id="cat_@category.Id"
+                       checked="@isChecked" />
+
+                <label class="form-check-label"
+                       for="cat_@category.Id"
+                       style="color: var(--ah-silver);">
+
+                    @category.CategoryName
+
+                </label>
+
+            </div>
+        }
+    }
+    else
+    {
+        <span style="color:var(--ah-muted);
+            font-size:.85rem;">
+
+            No service categories available yet.
+
+        </span>
+    }
+
+</div>
